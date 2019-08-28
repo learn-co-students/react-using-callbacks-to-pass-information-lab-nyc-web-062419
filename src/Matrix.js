@@ -1,36 +1,42 @@
-import React, { Component } from 'react';
-import chromeBoi from './data.js'
-import Cell from './Cell.js'
-import ColorSelector from './ColorSelector.js'
+import React, { Component } from "react";
+import chromeBoi from "./data.js";
+import Cell from "./Cell.js";
+import ColorSelector from "./ColorSelector.js";
 
 export default class Matrix extends Component {
-
   constructor() {
-    super()
+    super();
+    this.state = {
+      selectedColor: "FFF"
+    };
   }
 
-  genRow = (vals) => (
-    vals.map((val, idx) => <Cell key={idx} color={val} />)
-  )
+  genRow = vals =>
+    vals.map((val, idx) => (
+      <Cell key={idx} color={val} newColor={this.state.selectedColor} />
+    ));
 
-  genMatrix = () => (
-    this.props.values.map((rowVals, idx) => <div key={idx} className="row">{this.genRow(rowVals)}</div>)
-  )
+  genMatrix = () =>
+    this.props.values.map((rowVals, idx) => (
+      <div key={idx} className="row">
+        {this.genRow(rowVals)}
+      </div>
+    ));
 
+  clickHandler = color => {
+    this.setState({ selectedColor: color });
+  };
 
   render() {
     return (
       <div id="app">
-        <ColorSelector />
-        <div id="matrix">
-          {this.genMatrix()}
-        </div>
+        <ColorSelector color={this.clickHandler} />
+        <div id="matrix">{this.genMatrix()}</div>
       </div>
-    )
+    );
   }
-
 }
 
 Matrix.defaultProps = {
   values: chromeBoi
-}
+};
